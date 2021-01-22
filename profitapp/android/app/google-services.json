@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "689530494753",
+    "project_id": "profittracker12",
+    "storage_bucket": "profittracker12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689530494753:android:1ad1e844df6c8e797fe860",
+        "android_client_info": {
+          "package_name": "com.example.profittrackerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689530494753-3lcfn8e4ont2efda4duahg4m6n32t71e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVudc8RQ-jdAwz1IyJB0iE6x4_tdgnfnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689530494753-3lcfn8e4ont2efda4duahg4m6n32t71e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
