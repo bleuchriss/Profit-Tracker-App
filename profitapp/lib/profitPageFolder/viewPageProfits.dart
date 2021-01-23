@@ -10,29 +10,36 @@ class ViewPageProfits extends StatefulWidget {
 class ViewPageProfitsState extends State<ViewPageProfits> {
   @override
   Widget build(BuildContext context) {
+    var backButton = RaisedButton(
+      shape: StadiumBorder(),
+      color: Colors.blue[300],
+      child: Text('              Back              ',
+          style: TextStyle(
+            fontSize: 20,
+            fontFamily: 'BebasNeue',
+          )),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    var itemText = Text(ProfitPageState.itemName.toString(),
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontSize: SizeConfig.safeBlockVertical * 7,
+            fontFamily: 'BebasNeue'));
+
+    
+    
+    
     return Scaffold(
         body: Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-          RaisedButton(
-            shape: StadiumBorder(),
-            color: Colors.blue[300],
-            child: Text('              Back              ',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: 'BebasNeue',
-                )),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          Text(ProfitPageState.itemName.toString(),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: SizeConfig.safeBlockVertical * 7,
-                  fontFamily: 'BebasNeue')),
+          backButton,
+          itemText,
           SizedBox(height: SizeConfig.safeBlockVertical * 2),
           Text(
               ProfitPageState.itemColor != null
