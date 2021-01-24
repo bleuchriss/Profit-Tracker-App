@@ -143,7 +143,7 @@ class ChangePasswordState extends State<ChangePassword> {
               //firebase update password
               await currentUser.reauthenticateWithCredential(credential);
               currentUser.updatePassword(newPassword.text);
-              //sends user back to account apge
+              //sends user back to account page
               Navigator.of(context).pop();
             } on FirebaseAuthException catch (error) {
               setState(() {

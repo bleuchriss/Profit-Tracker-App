@@ -16,7 +16,7 @@ class AboutPageState extends State<AboutPage> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Row(children: [
-        SizedBox(width: SizeConfig.safeBlockHorizontal * 17),
+        SizedBox(width: SizeConfig.safeBlockHorizontal * 27),
         Image.asset('assets/PRShoe.png', height: 150) //image asset for logo
       ]),
       Row(

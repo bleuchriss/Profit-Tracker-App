@@ -218,8 +218,8 @@ class AddInventoryPageState extends State<AddInventoryPage> {
                 key: _formKey,
                 child: ListView(children: [
                   Row(children: [
-                    SizedBox(width: SizeConfig.safeBlockHorizontal * 23),
-                    Image.asset('assets/additem.png', height: 150)
+                    SizedBox(width: SizeConfig.safeBlockHorizontal * 19),
+                    Image.asset('assets/additem.png', height: 170, width: 250)
                   ]),
                   backButton,
                   SizedBox(height: 100),
