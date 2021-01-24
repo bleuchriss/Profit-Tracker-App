@@ -1,3 +1,4 @@
+//import statements
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:profitapp/loginPage.dart';
@@ -11,20 +12,26 @@ class AddInventoryPage extends StatefulWidget {
 }
 
 class AddInventoryPageState extends State<AddInventoryPage> {
+  //creates firebase instance
   final db = FirebaseFirestore.instance;
 
+  //key for validators
   final _formKey = GlobalKey<FormState>();
 
+  //text editing controller sto receive user input
   static final TextEditingController name = TextEditingController();
   static final TextEditingController price = TextEditingController();
   static final TextEditingController condition = TextEditingController();
   static final TextEditingController size = TextEditingController();
   static final TextEditingController location = TextEditingController();
   static final TextEditingController colorway = TextEditingController();
+
+  //text variables
   static final documentId = '';
   var errorTextPrice;
   @override
   Widget build(BuildContext context) {
+    //name field text field variable
     final nameField = TextFormField(
         inputFormatters: [LengthLimitingTextInputFormatter(37)],
         controller: name,
@@ -39,6 +46,7 @@ class AddInventoryPageState extends State<AddInventoryPage> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))));
 
+    //price field text field variable
     final priceField = TextFormField(
         inputFormatters: [LengthLimitingTextInputFormatter(6)],
         controller: price,
@@ -50,6 +58,7 @@ class AddInventoryPageState extends State<AddInventoryPage> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))));
 
+    //location field text field variable
     final locationField = TextFormField(
         inputFormatters: [LengthLimitingTextInputFormatter(16)],
         controller: location,
@@ -59,6 +68,7 @@ class AddInventoryPageState extends State<AddInventoryPage> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))));
 
+    //condition field text field variable
     final conditionField = TextFormField(
         inputFormatters: [LengthLimitingTextInputFormatter(16)],
         controller: condition,
@@ -73,6 +83,7 @@ class AddInventoryPageState extends State<AddInventoryPage> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))));
 
+    //size field text field variable
     final sizeField = TextFormField(
         inputFormatters: [LengthLimitingTextInputFormatter(20)],
         controller: size,
@@ -87,6 +98,7 @@ class AddInventoryPageState extends State<AddInventoryPage> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))));
 
+    //color field text field variable
     final colorField = TextFormField(
         inputFormatters: [LengthLimitingTextInputFormatter(16)],
         controller: colorway,
@@ -96,6 +108,109 @@ class AddInventoryPageState extends State<AddInventoryPage> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))));
 
+    //back button variable
+    var backButton = RaisedButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      shape: StadiumBorder(),
+      color: Colors.purple[600],
+      child: Text("     Back     ",
+          style: TextStyle(
+            fontSize: 20,
+            fontFamily: 'BebasNeue',
+          )),
+    );
+
+    //text variables:
+    var nameText = Text('    Name*',
+        style: TextStyle(
+          fontSize: 20,
+          fontFamily: 'BebasNeue',
+        ));
+
+    var purchasePriceText = Text('    Purchased Price*',
+        style: TextStyle(
+          fontSize: 20,
+          fontFamily: 'BebasNeue',
+        ));
+
+    var locationText = Text('    Purchased From',
+        style: TextStyle(
+          fontSize: 20,
+          fontFamily: 'BebasNeue',
+        ));
+
+    var conditionText = Text('    Condition*',
+        style: TextStyle(
+          fontSize: 20,
+          fontFamily: 'BebasNeue',
+        ));
+
+    var colorwayText = Text('    Colorway',
+        style: TextStyle(
+          fontSize: 20,
+          fontFamily: 'BebasNeue',
+        ));
+
+    var sizeText = Text('    Size*',
+        style: TextStyle(
+          fontSize: 20,
+          fontFamily: 'BebasNeue',
+        ));
+
+    //add button variable
+    var addButton = RaisedButton(
+      onPressed: () async {
+        try {
+          setState(() {
+            errorTextPrice = null;
+          });
+          // if the form key is validated (no text field errors)
+          if (_formKey.currentState.validate()) {
+            // create the item object and feed in the parameters
+            final Item item = new Item(
+                name.text,
+                double.parse(price.text),
+                location.text,
+                condition.text,
+                size.text,
+                colorway.text,
+                0.0,
+                0.0);
+            // get the users uid
+            final uid = await LoginPageState.getCurrentUID();
+            //add the item to the database
+            await db
+                .collection("userData")
+                .doc(uid)
+                .collection("items")
+                .add(item.toJson());
+            // jump back to previous page
+            Navigator.of(context).pop();
+            // reset all the field variables(so it's empty)
+            name.text = '';
+            price.text = '';
+            location.text = '';
+            condition.text = '';
+            size.text = '';
+            colorway.text = '';
+          }
+        } catch (e) {
+          setState(() {
+            errorTextPrice = 'Please enter a price';
+          });
+        }
+      },
+      shape: StadiumBorder(),
+      color: Colors.purple[600],
+      child: Text("     Add Item     ",
+          style: TextStyle(
+            fontSize: 20,
+            fontFamily: 'BebasNeue',
+          )),
+    );
+    //scaffold holding all widgets
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Center(
@@ -106,105 +221,27 @@ class AddInventoryPageState extends State<AddInventoryPage> {
                     SizedBox(width: SizeConfig.safeBlockHorizontal * 23),
                     Image.asset('assets/additem.png', height: 150)
                   ]),
-                  RaisedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    shape: StadiumBorder(),
-                    color: Colors.blue[300],
-                    child: Text("     Back     ",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'BebasNeue',
-                        )),
-                  ),
+                  backButton,
                   SizedBox(height: 100),
-                  Text('    Name*',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'BebasNeue',
-                      )),
+                  nameText,
                   nameField,
                   SizedBox(height: 125),
-                  Text('    Purchased Price*',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'BebasNeue',
-                      )),
+                  purchasePriceText,
                   priceField,
                   SizedBox(height: 125),
-                  Text('    Purchased From',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'BebasNeue',
-                      )),
+                  locationText,
                   locationField,
                   SizedBox(height: 125),
-                  Text('    Condition*',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'BebasNeue',
-                      )),
+                  conditionText,
                   conditionField,
                   SizedBox(height: 125),
-                  Text('    Colorway',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'BebasNeue',
-                      )),
+                  colorwayText,
                   colorField,
                   SizedBox(height: 125),
-                  Text('    Size*',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'BebasNeue',
-                      )),
+                  sizeText,
                   sizeField,
                   SizedBox(height: 250),
-                  RaisedButton(
-                    onPressed: () async {
-                      try {
-                        setState(() {
-                          errorTextPrice = null;
-                        });
-                        if (_formKey.currentState.validate()) {
-                          final Item item = new Item(
-                              name.text,
-                              double.parse(price.text),
-                              location.text,
-                              condition.text,
-                              size.text,
-                              colorway.text,
-                              0.0,
-                              0.0);
-                          final uid = await LoginPageState.getCurrentUID();
-                          await db
-                              .collection("userData")
-                              .doc(uid)
-                              .collection("items")
-                              .add(item.toJson());
-                          Navigator.of(context).pop();
-                          name.text = '';
-                          price.text = '';
-                          location.text = '';
-                          condition.text = '';
-                          size.text = '';
-                          colorway.text = '';
-                        }
-                      } catch (e) {
-                        setState(() {
-                          errorTextPrice = 'Please enter a price';
-                        });
-                      }
-                    },
-                    shape: StadiumBorder(),
-                    color: Colors.blue[300],
-                    child: Text("     Add Item     ",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'BebasNeue',
-                        )),
-                  ),
+                  addButton
                 ]))));
   }
 }

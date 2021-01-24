@@ -9,14 +9,18 @@ import './signUpPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialize firebase
   Firebase.initializeApp();
+  // run the app
   runApp(new MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomePage()); // returns the home page
   }
 }
 
@@ -27,16 +31,19 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   Widget build(BuildContext ctx) {
+    // sets an only portrait orientation
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    // call the SizeConfig initilization
     SizeConfig().init(ctx);
-
+    // logo image variable
     final logo = Image.asset('assets/PRLOGO.png',
         height: SizeConfig.safeBlockVertical * 70,
-        width: SizeConfig.safeBlockHorizontal * 98);
+        width: SizeConfig.safeBlockHorizontal * 75);
 
+    // login button variables
     final loginButton = RaisedButton(
         shape: StadiumBorder(),
-        color: Colors.blue[300],
+        color: Colors.purple[600],
         child: Text('                  Login                  ',
             style: TextStyle(
               fontSize: 25,
@@ -54,9 +61,10 @@ class HomePageState extends State<HomePage> {
           });
         });
 
+    // sign up button variable
     final signUpButton = RaisedButton(
         shape: StadiumBorder(),
-        color: Colors.blue[300],
+        color: Colors.purple[600],
         child: Text('         Account Setup         ',
             style: TextStyle(
               fontSize: 25,
@@ -73,15 +81,19 @@ class HomePageState extends State<HomePage> {
             width: SizeConfig.safeBlockHorizontal * 120,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/particles.gif'),
+                    image: AssetImage(
+                        'assets/particles.gif'), // uses the particles gif
                     fit: BoxFit.cover)),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Row(children: [logo]),
+              Row(children: [
+                SizedBox(width: 100),
+                logo
+              ]), // puts the logo in a row
               Spacer(flex: 2),
-              loginButton,
+              loginButton, // login button
               SizedBox(height: SizeConfig.safeBlockVertical * 1),
-              signUpButton,
+              signUpButton, // sign up button
               Spacer(flex: 10)
             ])));
   }

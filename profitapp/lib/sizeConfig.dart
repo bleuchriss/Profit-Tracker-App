@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+// SizeConfig is a class that takes in the current devices and assigns certain sizes
 class SizeConfig {
   static MediaQueryData _mediaQueryData;
   static double screenWidth;
@@ -13,10 +14,11 @@ class SizeConfig {
   static double pixelRatio;
   static double textScaleFactor;
 
+  // initilization method
   void init(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context);
-    screenWidth = _mediaQueryData.size.width;
-    screenHeight = _mediaQueryData.size.height;
+    screenWidth = _mediaQueryData.size.width; // screen width
+    screenHeight = _mediaQueryData.size.height; // screen height
     blockSizeHorizontal = screenWidth / 100;
     blockSizeVertical = screenHeight / 100;
     _safeAreaHorizontal =

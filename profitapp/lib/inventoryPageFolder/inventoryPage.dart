@@ -1,3 +1,4 @@
+//import statements
 import 'package:profitapp/loginPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +24,16 @@ class InventoryPageState extends State<InventoryPage> {
   static String itemSize;
   var user = FirebaseAuth.instance.currentUser;
   Widget build(BuildContext context) {
+    var inventoryText = Text('Inventory',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontFamily: 'BebasNeue',
+            fontSize: SizeConfig.screenHeight * 0.050,
+            color: Colors.purple[600]));
+
     final addButton = RaisedButton(
         shape: StadiumBorder(),
-        color: Colors.blue[300],
+        color: Colors.purple[600],
         child: Text('              Add New Item              ',
             style: TextStyle(
               fontSize: SizeConfig.screenHeight * 0.030,
@@ -40,12 +48,7 @@ class InventoryPageState extends State<InventoryPage> {
         backgroundColor: Colors.white,
         floatingActionButton: null,
         body: ListView(children: [
-          Text('Inventory',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontFamily: 'BebasNeue',
-                  fontSize: SizeConfig.screenHeight * 0.050,
-                  color: Colors.blue[300])),
+          inventoryText,
           addButton,
           SizedBox(height: SizeConfig.screenHeight * 0.002),
           Container(
@@ -65,6 +68,122 @@ class InventoryPageState extends State<InventoryPage> {
                     } else {
                       return ListView(
                         children: snapshot.data.docs.map((document) {
+                          // sell button variable that move the current item to
+                          // profits page and removes it from the inventory page
+                          var sellButton = RaisedButton(
+                            onPressed: () async {
+                              itemName = document['itemName'].toString();
+
+                              itemColor = document['itemColor'].toString();
+
+                              itemLocation =
+                                  document['itemLocation'].toString();
+                              itemPrice =
+                                  document['itemPrice'].toStringAsFixed(2);
+                              itemSize = document['itemSize'].toString();
+                              itemCondition =
+                                  document['itemCondition'].toString();
+                              doc_id = document.id;
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => SellPopUp()));
+                            },
+                            color: Colors.blue[600],
+                            child: Text("       Sell       ",
+                                style: TextStyle(
+                                    fontSize: SizeConfig.safeBlockVertical * 3,
+                                    fontFamily: 'BebasNeue',
+                                    color: Colors.black)),
+                          );
+
+                          // view button that shows the current item in more detail
+                          var viewButton = RaisedButton(
+                            onPressed: () {
+                              itemCondition =
+                                  document['itemCondition'].toString();
+                              itemName = document['itemName'].toString();
+
+                              itemColor = document['itemColor'].toString();
+
+                              itemLocation =
+                                  document['itemLocation'].toString();
+                              itemPrice =
+                                  document['itemPrice'].toStringAsFixed(2);
+                              itemSize = document['itemSize'].toString();
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ViewPage()));
+                            },
+                            color: Colors.purple[600],
+                            child: Text("       View       ",
+                                style: TextStyle(
+                                    fontSize: SizeConfig.safeBlockVertical * 3,
+                                    fontFamily: 'BebasNeue',
+                                    color: Colors.black)),
+                          );
+
+                          //delete button that shows the confirm delete dialog
+                          var deleteButton = RaisedButton(
+                            onPressed: () {
+                              Dialogs.information(context);
+
+                              doc_id = document.id;
+                            },
+                            color: Colors.indigo[600],
+                            child: Text("     Delete     ",
+                                style: TextStyle(
+                                    fontSize: SizeConfig.safeBlockVertical * 3,
+                                    fontFamily: 'BebasNeue',
+                                    color: Colors.black)),
+                          );
+                          // text variables with formatting
+                          var itemNameText = Text(
+                            document['itemName'].length > 12
+                                ? document['itemName'].substring(0, 9) + '...'
+                                : document['itemName'],
+                            style: TextStyle(
+                              fontFamily: 'BebasNeue',
+                              fontSize: SizeConfig.safeBlockVertical * 5,
+                            ),
+                          );
+                          var itemSizeText = Text(
+                            document['itemSize'].length > 10
+                                ? 'Size: ' +
+                                    document['itemSize'].substring(0, 7) +
+                                    '...'
+                                : 'Size: ' + document['itemSize'],
+                            style: TextStyle(
+                              fontFamily: 'BebasNeue',
+                              fontSize: SizeConfig.safeBlockVertical * 3,
+                            ),
+                          );
+                          var itemCondText = Text(
+                            document['itemCondition'].length > 10
+                                ? "Condition: " +
+                                    document['itemCondition'].substring(0, 7) +
+                                    '...'
+                                : "Condition: " + document['itemCondition'],
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontFamily: 'BebasNeue',
+                              fontSize: SizeConfig.safeBlockVertical * 3,
+                            ),
+                          );
+                          var itemPriceText = Text(
+                            document['itemPrice'].toStringAsFixed(2).length > 10
+                                ? 'Price: \$' +
+                                    document['itemPrice']
+                                        .toStringAsFixed(2)
+                                        .substring(0, 8) +
+                                    '...'
+                                : 'Price: \$' +
+                                    document['itemPrice'].toStringAsFixed(2),
+                            style: TextStyle(
+                              fontFamily: 'BebasNeue',
+                              fontSize: SizeConfig.safeBlockVertical * 3,
+                            ),
+                          );
+
                           return Container(
                               child: Card(
                                   color: Colors.white,
@@ -72,103 +191,11 @@ class InventoryPageState extends State<InventoryPage> {
                                       padding: EdgeInsets.all(25),
                                       child: Row(children: [
                                         Container(
-                                          child: Column(
-                                            children: [
-                                              RaisedButton(
-                                                onPressed: () async {
-                                                  itemName =
-                                                      document['itemName']
-                                                          .toString();
-
-                                                  itemColor =
-                                                      document['itemColor']
-                                                          .toString();
-
-                                                  itemLocation =
-                                                      document['itemLocation']
-                                                          .toString();
-                                                  itemPrice =
-                                                      document['itemPrice']
-                                                          .toStringAsFixed(2);
-                                                  itemSize =
-                                                      document['itemSize']
-                                                          .toString();
-                                                  itemCondition =
-                                                      document['itemCondition']
-                                                          .toString();
-                                                  doc_id = document.id;
-
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              SellPopUp()));
-                                                },
-                                                color: Colors.green[500],
-                                                child: Text(
-                                                    "       Sell       ",
-                                                    style: TextStyle(
-                                                        fontSize: SizeConfig
-                                                                .safeBlockVertical *
-                                                            3,
-                                                        fontFamily: 'BebasNeue',
-                                                        color: Colors.black)),
-                                              ),
-                                              RaisedButton(
-                                                onPressed: () {
-                                                  itemCondition =
-                                                      document['itemCondition']
-                                                          .toString();
-                                                  itemName =
-                                                      document['itemName']
-                                                          .toString();
-
-                                                  itemColor =
-                                                      document['itemColor']
-                                                          .toString();
-
-                                                  itemLocation =
-                                                      document['itemLocation']
-                                                          .toString();
-                                                  itemPrice =
-                                                      document['itemPrice']
-                                                          .toStringAsFixed(2);
-                                                  itemSize =
-                                                      document['itemSize']
-                                                          .toString();
-
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ViewPage()));
-                                                },
-                                                color: Colors.blue[300],
-                                                child: Text(
-                                                    "       View       ",
-                                                    style: TextStyle(
-                                                        fontSize: SizeConfig
-                                                                .safeBlockVertical *
-                                                            3,
-                                                        fontFamily: 'BebasNeue',
-                                                        color: Colors.black)),
-                                              ),
-                                              RaisedButton(
-                                                onPressed: () {
-                                                  Dialogs.information(context);
-
-                                                  doc_id = document.id;
-                                                },
-                                                color: Colors.red,
-                                                child: Text("     Delete     ",
-                                                    style: TextStyle(
-                                                        fontSize: SizeConfig
-                                                                .safeBlockVertical *
-                                                            3,
-                                                        fontFamily: 'BebasNeue',
-                                                        color: Colors.black)),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                            child: Column(children: [
+                                          sellButton,
+                                          viewButton,
+                                          deleteButton
+                                        ])),
                                         SizedBox(
                                             width:
                                                 SizeConfig.safeBlockHorizontal *
@@ -177,87 +204,10 @@ class InventoryPageState extends State<InventoryPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Row(children: [
-                                                Text(
-                                                  document['itemName'].length >
-                                                          12
-                                                      ? document['itemName']
-                                                              .substring(0, 9) +
-                                                          '...'
-                                                      : document['itemName'],
-                                                  style: TextStyle(
-                                                    fontFamily: 'BebasNeue',
-                                                    fontSize: SizeConfig
-                                                            .safeBlockVertical *
-                                                        5,
-                                                  ),
-                                                )
-                                              ]),
-                                              Row(children: [
-                                                Text(
-                                                  document['itemSize'].length >
-                                                          10
-                                                      ? 'Size: ' +
-                                                          document['itemSize']
-                                                              .substring(0, 7) +
-                                                          '...'
-                                                      : 'Size: ' +
-                                                          document['itemSize'],
-                                                  style: TextStyle(
-                                                    fontFamily: 'BebasNeue',
-                                                    fontSize: SizeConfig
-                                                            .safeBlockVertical *
-                                                        3,
-                                                  ),
-                                                )
-                                              ]),
-                                              Row(children: [
-                                                Text(
-                                                  document['itemCondition']
-                                                              .length >
-                                                          10
-                                                      ? "Condition: " +
-                                                          document[
-                                                                  'itemCondition']
-                                                              .substring(0, 7) +
-                                                          '...'
-                                                      : "Condition: " +
-                                                          document[
-                                                              'itemCondition'],
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontFamily: 'BebasNeue',
-                                                    fontSize: SizeConfig
-                                                            .safeBlockVertical *
-                                                        3,
-                                                  ),
-                                                )
-                                              ]),
-                                              Row(children: [
-                                                Text(
-                                                  document['itemPrice']
-                                                              .toStringAsFixed(
-                                                                  2)
-                                                              .length >
-                                                          10
-                                                      ? 'Price: \$' +
-                                                          document['itemPrice']
-                                                              .toStringAsFixed(
-                                                                  2)
-                                                              .substring(0, 8) +
-                                                          '...'
-                                                      : 'Price: \$' +
-                                                          document['itemPrice']
-                                                              .toStringAsFixed(
-                                                                  2),
-                                                  style: TextStyle(
-                                                    fontFamily: 'BebasNeue',
-                                                    fontSize: SizeConfig
-                                                            .safeBlockVertical *
-                                                        3,
-                                                  ),
-                                                )
-                                              ])
+                                              Row(children: [itemNameText]),
+                                              Row(children: [itemSizeText]),
+                                              Row(children: [itemCondText]),
+                                              Row(children: [itemPriceText])
                                             ])
                                       ]))));
                         }).toList(),

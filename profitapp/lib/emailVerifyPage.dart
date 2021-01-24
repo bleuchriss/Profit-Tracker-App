@@ -1,3 +1,4 @@
+//import statements
 import 'package:flutter/material.dart';
 import './sizeConfig.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,19 +10,22 @@ class EmailVerify extends StatefulWidget {
 }
 
 class EmailVerifyState extends State<EmailVerify> {
+  //error text variable
   String errorText = "";
   @override
   Widget build(BuildContext context) {
+    //verify text variable
     final verify = Text("Verify Email Address",
         style: (TextStyle(fontSize: 40, fontFamily: 'BebasNeue')));
 
+    //button to resend email verification variable
     var sendVerificationEmail = RaisedButton(
       onPressed: () async {
         final currentUser = FirebaseAuth.instance.currentUser;
         await currentUser.sendEmailVerification();
       },
       shape: StadiumBorder(),
-      color: Colors.blue[300],
+      color: Colors.purple[600],
       child: Text("Resend Email Verification",
           style: TextStyle(
             fontSize: SizeConfig.textScaleFactor * 20,
@@ -29,6 +33,7 @@ class EmailVerifyState extends State<EmailVerify> {
           )),
     );
 
+    //button to push to inventory page if email verified variable
     var nextButton = RaisedButton(
       onPressed: () {
         var user = FirebaseAuth.instance.currentUser;
@@ -43,7 +48,7 @@ class EmailVerifyState extends State<EmailVerify> {
         }
       },
       shape: StadiumBorder(),
-      color: Colors.blue[300],
+      color: Colors.purple[600],
       child: Text("Next",
           style: TextStyle(
             fontSize: SizeConfig.textScaleFactor * 20,
@@ -51,10 +56,12 @@ class EmailVerifyState extends State<EmailVerify> {
           )),
     );
 
+    //error text variable
     var errorField = Text(errorText,
         style: (TextStyle(
             fontSize: 20, color: Colors.red, fontFamily: 'BebasNeue')));
-    
+
+    //scaffold holding all widgets
     return Scaffold(
         body: Container(
             height: SizeConfig.safeBlockVertical * 120,

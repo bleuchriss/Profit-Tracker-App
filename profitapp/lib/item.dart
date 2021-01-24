@@ -1,4 +1,6 @@
+//item class
 class Item {
+  //item instance variables
   String itemName;
   double itemPrice;
   String itemLocation;
@@ -8,6 +10,7 @@ class Item {
   double sellValue;
   double difference;
 
+//receiving user parameters and setting them to class instance variables
   Item(
     this.itemName,
     this.itemPrice,
@@ -19,6 +22,7 @@ class Item {
     this.difference,
   );
 
+//converts item variables to Json type for firestore
   Map<String, dynamic> toJson() => {
         'itemName': itemName,
         'itemPrice': itemPrice,

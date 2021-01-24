@@ -1,3 +1,4 @@
+//import statements
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import './sizeConfig.dart';
@@ -8,19 +9,28 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class ForgotPasswordState extends State<ForgotPassword> {
+  //creates an instance of firebase
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  //validator text
   String successText = "";
+
+  //key for validator
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  //text controller to receive user input
   final TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    //image asset variable for logo
     final logo = Image.asset('assets/PRShoe.png',
         width: SizeConfig.safeBlockHorizontal * 50,
         height: MediaQuery.of(context).viewInsets.bottom == 0.0
             ? SizeConfig.safeBlockVertical * 40
             : SizeConfig.safeBlockVertical * 25);
 
+    //text field for email variable
     var emailField = TextFormField(
       controller: emailController,
       decoration: new InputDecoration(
@@ -36,15 +46,17 @@ class ForgotPasswordState extends State<ForgotPassword> {
       },
     );
 
+    //success text variable
     var success = Text(successText,
         style: TextStyle(
             color: successText == "Email does not exist, please try again"
                 ? Colors.red
                 : Colors.green));
 
+    //variable for reset email button
     var sendEmailButton = RaisedButton(
       shape: StadiumBorder(),
-      color: Colors.blue[300],
+      color: Colors.purple[600],
       onPressed: () async {
         try {
           await auth.sendPasswordResetEmail(email: emailController.text);
@@ -63,19 +75,21 @@ class ForgotPasswordState extends State<ForgotPassword> {
           style: TextStyle(fontFamily: 'BebasNeue', fontSize: 24)),
     );
 
+    //back button variable
     var backButton = RaisedButton(
       onPressed: () {
         Navigator.of(context).pop();
       },
       shape: StadiumBorder(),
-      color: Colors.blue[300],
+      color: Colors.purple[600],
       child: Text("            Back            ",
           style: TextStyle(
             fontSize: 24,
             fontFamily: 'BebasNeue',
           )),
     );
-    
+
+//scaffold holding all widgets
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -89,7 +103,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
                 child: Column(
                   children: <Widget>[
                     Row(children: [
-                      SizedBox(width: SizeConfig.safeBlockHorizontal * 13),
+                      SizedBox(width: SizeConfig.safeBlockHorizontal * 19),
                       logo
                     ]),
                     SizedBox(height: SizeConfig.safeBlockVertical),

@@ -1,3 +1,4 @@
+//import statements
 import './home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,13 @@ class Register extends StatefulWidget {
 }
 
 class RegisterState extends State<Register> {
+  //creating an instance of firebase
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  //key for validators
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  //text controllers to get user input
   final TextEditingController displayName = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -22,6 +28,7 @@ class RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    //creates new firebase account
     void _registerAccount() async {
       final User user = (await auth.createUserWithEmailAndPassword(
         email: emailController.text,
@@ -29,11 +36,12 @@ class RegisterState extends State<Register> {
       ))
           .user;
 
+      //sends verification email and pushes to verification page
       if (user != null) {
         if (!user.emailVerified) {
           await user.sendEmailVerification();
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => EmailVerify()));
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => EmailVerify()));
           await user.updateProfile(displayName: displayName.text);
         } else {
           final user1 = auth.currentUser;
@@ -46,13 +54,15 @@ class RegisterState extends State<Register> {
         isSuccess = false;
       }
     }
-   
+
+    //image asset for logo variable
     final logo = Image.asset('assets/PRShoe.png',
         width: SizeConfig.safeBlockHorizontal * 50,
         height: MediaQuery.of(context).viewInsets.bottom == 0.0
             ? SizeConfig.safeBlockVertical * 30
             : SizeConfig.safeBlockVertical * 15);
 
+    //text field for display name
     var displayNameField = TextFormField(
       controller: displayName,
       decoration: new InputDecoration(
@@ -68,6 +78,7 @@ class RegisterState extends State<Register> {
       },
     );
 
+    //text field for email
     var emailField = TextFormField(
       controller: emailController,
       decoration: new InputDecoration(
@@ -83,6 +94,7 @@ class RegisterState extends State<Register> {
       },
     );
 
+    //text field for password
     var passwordField = TextFormField(
       controller: passwordController,
       decoration: new InputDecoration(
@@ -100,6 +112,7 @@ class RegisterState extends State<Register> {
       obscureText: true,
     );
 
+    //re-enter password text field variable
     var passwordCheckField = TextFormField(
       controller: passwordCheckController,
       obscureText: true,
@@ -117,9 +130,10 @@ class RegisterState extends State<Register> {
       },
     );
 
-    final createAccountButton = RaisedButton(
+    //variable for button that creates account
+    var createAccountButton = RaisedButton(
       shape: StadiumBorder(),
-      color: Colors.blue[300],
+      color: Colors.purple[600],
       child: Text("        Create Account        ",
           style: TextStyle(fontFamily: 'BebasNeue', fontSize: 24)),
       onPressed: () async {
@@ -134,11 +148,13 @@ class RegisterState extends State<Register> {
             });
           }
         });
-
+        // checks if the re-entered password is the same
         if (formKey.currentState.validate() &&
             passwordController.text == passwordCheckController.text) {
+          // try to create the account
           try {
             _registerAccount();
+            // throws an error if it fails (only firebase fails)
           } on FirebaseAuthException catch (e) {
             setState(() {
               errorTextSignUp = 'Failed to register account';
@@ -148,12 +164,13 @@ class RegisterState extends State<Register> {
       },
     );
 
+    //variable for back button
     final backButton = RaisedButton(
       onPressed: () {
         Navigator.of(context).pop();
       },
       shape: StadiumBorder(),
-      color: Colors.blue[300],
+      color: Colors.purple[600],
       child: Text("            Back            ",
           style: TextStyle(
             fontSize: 24,
@@ -161,6 +178,7 @@ class RegisterState extends State<Register> {
           )),
     );
 
+    //scaffold holding all widgets
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -174,7 +192,7 @@ class RegisterState extends State<Register> {
                 child: Column(
                   children: <Widget>[
                     Row(children: [
-                      SizedBox(width: SizeConfig.safeBlockHorizontal * 13),
+                      SizedBox(width: SizeConfig.safeBlockHorizontal * 19),
                       logo
                     ]),
                     displayNameField,

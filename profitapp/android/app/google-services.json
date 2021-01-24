@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:689530494753:android:1ad1e844df6c8e797fe860",
+        "mobilesdk_app_id": "1:689530494753:android:075f373ae34af4967fe860",
         "android_client_info": {
-          "package_name": "com.example.profittrackerapp"
+          "package_name": "com.example.profitapp"
         }
       },
       "oauth_client": [
