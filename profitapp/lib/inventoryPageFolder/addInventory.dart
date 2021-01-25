@@ -27,7 +27,6 @@ class AddInventoryPageState extends State<AddInventoryPage> {
   static final TextEditingController colorway = TextEditingController();
 
   //text variables
-  static final documentId = '';
   var errorTextPrice;
   @override
   Widget build(BuildContext context) {
